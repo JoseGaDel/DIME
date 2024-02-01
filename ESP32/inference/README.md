@@ -1,29 +1,12 @@
-# Hello World Example
+# Inference timing measurements
 
-This example is designed to demonstrate the absolute basics of using [TensorFlow
-Lite for Microcontrollers](https://www.tensorflow.org/lite/microcontrollers).
-It includes the full end-to-end workflow of training a model, converting it for
-use with TensorFlow Lite for Microcontrollers for running inference on a
-microcontroller.
+This project has been built from the [Espressif TensorFlow
+Lite for Microcontrollers example]([https://www.tensorflow.org/lite/microcontrollers](https://github.com/espressif/esp-tflite-micro).
+It includes the full end-to-end routine for running inference on the CIFAR-10 dataset, which is fed into the microcontroller by the program which can be found in [ESP32/utilities/data_stream.py](https://github.com/JoseGaDel/DIME/tree/main/ESP32/utilities) and has to be run along side this.
 
-The model is trained to replicate a `sine` function and generates a pattern of
-data to either blink LEDs or control an animation, depending on the capabilities
-of the device.
+### Prerequisites
 
-## Deploy to ESP32
-
-The following instructions will help you build and deploy this sample
-to [ESP32](https://www.espressif.com/en/products/hardware/esp32/overview)
-devices using the [ESP IDF](https://github.com/espressif/esp-idf).
-
-The sample has been tested on ESP-IDF version `release/v4.2` and `release/v4.4` with the following devices:
-- [ESP32-DevKitC](http://esp-idf.readthedocs.io/en/latest/get-started/get-started-devkitc.html)
-- [ESP32-S3-DevKitC](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/hw-reference/esp32s3/user-guide-devkitc-1.html)
-- [ESP-EYE](https://github.com/espressif/esp-who/blob/master/docs/en/get-started/ESP-EYE_Getting_Started_Guide.md)
-
-### Install the ESP IDF
-
-Follow the instructions of the
+ESP-IDF needs to be installed to be able tu run this software. For this, follow the instructions of the
 [ESP-IDF get started guide](https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html)
 to setup the toolchain and the ESP-IDF itself.
 
@@ -34,34 +17,33 @@ The next steps assume that the
  * `idf.py` and Xtensa-esp32 tools (e.g. `xtensa-esp32-elf-gcc`) are in `$PATH`
 
 
-### Building the example
+### Building the project
 
-Set the chip target (For esp32s3 target, IDF version `release/v4.4` is needed):
+Assuming the previous condition is met, in this directory the first step is to load ESP-IDF's tools with the path where we have installed esp. For example:
+
+```bash
+. $HOME/esp/esp-idf/export.sh
+```
+
+This is not necessary if the alias has been already set for that script. To set up the configuration, there is the command
 
 ```
-idf.py set-target esp32s3
+idf.py menuconfig
 ```
 
-Then build with `idf.py`
+The file `sdkconfig.defaults` will load the required configuration for maximal performance, given that by default some configurations may be suboptimal, like the CPU frequency being locked to 160 MHz instead of 240 MHz. Then build with
+
 ```
 idf.py build
 ```
 
-### Load and run the example
+### Load and run the program
 
 To flash (replace `/dev/ttyUSB0` with the device serial port):
-```
-idf.py --port /dev/ttyUSB0 flash
-```
 
-Monitor the serial output:
 ```
-idf.py --port /dev/ttyUSB0 monitor
+idf.py -p /dev/ttyUSB0 flash
 ```
+Remember not to open the serial monitor to avoid interference with the companion program.
 
-Use `Ctrl+]` to exit.
-
-The previous two commands can be combined:
-```
-idf.py --port /dev/ttyUSB0 flash monitor
-```
+Use `Ctrl+]` to exit. The results from the experiment will be displayed in the terminal running the python program `data_stram.py`
