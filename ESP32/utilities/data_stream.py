@@ -31,7 +31,8 @@ def load_data_file(file_path):
             return j, data
 
     return 0, {'inference': np.zeros(0, dtype=int),
-                    'times': np.zeros(0),
+                    'times_inference': np.zeros(0),
+                    'times_total': np.zeros(0),
                     'logReg': np.zeros(0, dtype=int),
                     'tabulated': np.zeros(0, dtype=int)}
 
@@ -54,7 +55,8 @@ else:
 
 # Initialize your arrays with the appropriate size
 inference = np.concatenate([previous_run['inference'], np.zeros(num_images, dtype=int)])
-times = np.concatenate([previous_run['times'], np.zeros(num_images)])
+times_inference = np.concatenate([previous_run['times_inference'], np.zeros(num_images)])
+times_total = np.concatenate([previous_run['times_total'], np.zeros(num_images)])
 logReg = np.concatenate([previous_run['logReg'], np.zeros(num_images, dtype=int)])
 tabulated = np.concatenate([previous_run['tabulated'], np.zeros(num_images, dtype=int)])
 
@@ -93,7 +95,9 @@ for i in range(j*image_size, len(data), image_size):
     inference[j] = scores.index(max(scores))
     tabulated[j] = data[i]
     logReg[j] = int(data_elements[10])
-    times[j] = float(data_elements[11])/1000000
+    times_inference[j] = float(data_elements[11])
+    times_total[j] = float(data_elements[12])
+
     print(f'Processing image {j-starting_at} out of {num_images}', end='\r')
 
 
@@ -102,7 +106,7 @@ for i in range(j*image_size, len(data), image_size):
         break
 
 # we store the results so that we can resume the program later from this point.
-np.save(file_path, {'inference': inference, 'times': times, 'logReg': logReg, 'tabulated': tabulated})
+np.save(file_path, {'inference': inference, 'times_inference': times_inference, 'times_total': times_total, 'logReg': logReg, 'tabulated': tabulated})
 
 # we now calculate the precision of the inference
 goods = 0   # number of correct predictions of the complete system (TinyML + Logistic Regression)
@@ -121,9 +125,14 @@ for i in range(j):
         noOff += 1
 
 
+avg_inference_time = np.sum(times_inference)/len(times_inference)
+avg_total_time = np.sum(times_total)/len(times_total)
+
 print(f'\n\nOut of {j} images\n__________________\nGood predictions: {goods}\nBad predictions: {bads}\nPrecision: {goods/j*100}\nNumber of offloads: {np.sum(logReg == 0)}')
 print(f'Of those offloads, {noOff} were correctly predicted by LR to be a wrong inference\nprec without offload: {(goods-noOff)/j*100}\n')
-print(f'Avg inference time: {np.sum(times)/len(times)}')
+print(f'Avg inference time: {avg_inference_time} us   ({avg_inference_time/1000000} s)\nAvg total time: {avg_total_time} us   ({avg_total_time/1000000} s)')
+print(f'Avg difference {avg_total_time-avg_inference_time} us   ({(avg_total_time-avg_inference_time)/1000000} s)')
+print(f'Inference represents {avg_inference_time/avg_total_time*100}% of the total time')
 
 ser.close()
 

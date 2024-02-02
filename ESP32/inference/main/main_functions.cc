@@ -68,7 +68,7 @@ int8_t image[ROWS][COLUMNS][CHANNELS];
 // buffer to store received data
 uint8_t rx_buffer[BUF_SIZE];
 
-uint32_t dt,t0;
+uint32_t dt, t0_total, t0_inference;
 
 }  // namespace
 
@@ -131,8 +131,8 @@ void loop() {
   // Check if there is any data available on the UART
   int rx_length = uart_read_bytes(UART_PORT, rx_buffer, BUF_SIZE, portMAX_DELAY);
 
-  // Record the start time
-  t0 = timer_u32();
+  // Record the start time of the entire process (preprocessing, inference and LR)
+  t0_total = timer_u32();
 
   // If there is data available, store it in an array
   if (rx_length > 0) {
@@ -153,6 +153,8 @@ void loop() {
     // line commented in the for loop above, which does the same: copy the image array into the input tensor.
     memcpy(input->data.int8, image, sizeof(image));
 
+    // Record the start time of just the inference
+    t0_inference = timer_u32();
     // Run inference, and report any error
     TfLiteStatus invoke_status = interpreter->Invoke();
     if (invoke_status != kTfLiteOk) {
@@ -161,7 +163,11 @@ void loop() {
     }
 
     TfLiteTensor* output = interpreter->output(0);
-    
+
+    // Record the end time of the inference
+    dt = timer_u32() - t0_inference;
+    float elapsed_time_inference = timer_delta_us(dt);
+
     // For sending data over serial communication, we have chosen to send it as a string. When we attempt to send it
     // as a byte array, the data is not received correctly on the other end. The string is comma separated, with the
     // first 10 values being the quantized output of the model, the 11th value being the logistic regression result,
@@ -181,16 +187,18 @@ void loop() {
     // Perform logistic regression to estimate the validity of the inference
     uint8_t log_reg = LRpredict(scores);
 
-    // Record the end time
-    dt = timer_u32() - t0;
-    float elapsed_time = timer_delta_us(dt);
+    // Record the end time of the complete process
+    dt = timer_u32() - t0_total;
+    float elapsed_time_total = timer_delta_us(dt);
 
     // Add the Logistic Regression result to the output string
     snprintf(tempBuffer, sizeof(tempBuffer), "%d,", log_reg);
     strcat(dataString, tempBuffer);
 
-    // Add the execution time to the output string
-    snprintf(tempBuffer, sizeof(tempBuffer), "%f", elapsed_time);
+    // Add both execution times to the output string
+    snprintf(tempBuffer, sizeof(tempBuffer), "%f,", elapsed_time_inference);
+    strcat(dataString, tempBuffer);
+    snprintf(tempBuffer, sizeof(tempBuffer), "%f", elapsed_time_total);
     strcat(dataString, tempBuffer);
 
     // Send a signal to indicate that a message is about to be sent
