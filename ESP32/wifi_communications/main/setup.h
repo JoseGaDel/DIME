@@ -4,8 +4,7 @@
 // Credentials of the WiFi Access Point
 #define SSID "jose-hotspot"
 #define PASS ""  // leave empty if the wifi is open. If it has password, uncomment the desired authentication mode
-#define AUTHMODE WIFI_AUTH_OPEN
-//#define  AUTHMODE WIFI_AUTH_WPA2_PSK
+#define  AUTHMODE WIFI_AUTH_WPA2_PSK
 //#define AUTHMODE WIFI_AUTH_WEP
 //#define AUTHMODE WIFI_AUTH_WPA_PSK
 //#define AUTHMODE WIFI_AUTH_WPA2_PSK
