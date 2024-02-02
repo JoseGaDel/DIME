@@ -90,7 +90,8 @@ void tcp_client(void)
             }
 
             int len = recv(sock, rx_buffer, sizeof(rx_buffer) - 1, 0);
-
+            dt = timer_u32() - t0;
+            
             // Error occurred during receiving
             if (len < 0) {
                 ESP_LOGE(TAG, "recv failed: errno %d", errno);
@@ -106,7 +107,6 @@ void tcp_client(void)
             }
         }
         // take measurement of elapsed time
-        dt = timer_u32() - t0;
         elapsed_time += timer_delta_ms(dt);
     }
 
