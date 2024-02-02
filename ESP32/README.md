@@ -6,8 +6,13 @@ ESP-IDF needs to be installed to be able to run any of the applications in this 
 [ESP-IDF get started guide](https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html)
 to setup the toolchain and the ESP-IDF itself.
 
-Once the framework has been installed and the
-[IDF environment variables are set](https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html#step-4-set-up-the-environment-variables), the procedure to build and upload any of the projects is the same.
+To make use of this repository, make sure the framework has been installed and the
+[IDF environment variables are set](https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html#step-4-set-up-the-environment-variables):
+
+ * The `IDF_PATH` environment variable is set
+ * `idf.py` and Xtensa-esp32 tools (e.g. `xtensa-esp32-elf-gcc`) are in `$PATH`
+
+After this, the procedure to build and upload any of the projects is the same.
 
 ### Building a project
 
