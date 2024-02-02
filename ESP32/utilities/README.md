@@ -10,7 +10,7 @@ This directory contains a set of companion programs designed to be run on your l
 
 ## Inference
 
-To measure inference times in the ESP32 using [TinyML' ResNet](https://github.com/mlcommons/tiny/tree/master/benchmark/training/image_classification/trained_models), the program located in [ESP32/inference/](ESP32/inference) has to be built and flashed into the MCU. The program `data_stream.py` in this directory needs to be run in a system connected through the serial port to the microcontroller. The program running in the ESP32 will print the data to the serial port so as to avoid wrong conversions when the python program attempts to read raw byte data. Therefore, it is important that the **serial monitor is not open** as it will interfere with communication. Tu run the program, simply run:
+To measure inference times in the ESP32 using [TinyML' ResNet](https://github.com/mlcommons/tiny/tree/master/benchmark/training/image_classification/trained_models), the program located in [ESP32/inference/](../inference) has to be built and flashed into the MCU. The program `data_stream.py` in this directory needs to be run in a system connected through the serial port to the microcontroller. The program running in the ESP32 will print the data to the serial port so as to avoid wrong conversions when the python program attempts to read raw byte data. Therefore, it is important that the **serial monitor is not open** as it will interfere with communication. Tu run the program, simply run:
 
 ```bash
 python data_stream.py
