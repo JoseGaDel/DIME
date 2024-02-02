@@ -25,7 +25,7 @@ Assuming the previous condition is met, in this directory the first step is to l
 . $HOME/esp/esp-idf/export.sh
 ```
 
-This is not necessary if the alias has been already set for that script. To set up the configuration, there is the command
+This is not necessary if the alias has been already set for that script. You may need to perform a clean procedure to ensure there are no residual files from the original project. To do that, run `idf.py fullclean`. To set up the configuration, there is the command
 
 ```
 idf.py menuconfig
@@ -46,4 +46,8 @@ idf.py -p /dev/ttyUSB0 flash
 ```
 Remember not to open the serial monitor to avoid interference with the companion program.
 
-Use `Ctrl+]` to exit. The results from the experiment will be displayed in the terminal running the python program `data_stram.py`
+Use `Ctrl+]` to exit. The results from the experiment will be displayed in the terminal running the python program `data_stram.py`. 
+
+## Program structure
+
+In the main directory, the main program is in `main_fucntions.cc`. The only manual adjustment that may be needed is in the value of the macro `#define BAUD_RATE` which must match the value in `data_stream.py`. The program takes the weights stored in `model.cc`, builds the CNN with TensorFlow Lite and performs inference using the stream of images sent by the python program. A logistic regression model has been trained to predict when the model fails to recognise succesfully the class of an image. This implementation can be found in `LR.h` and the parameters `weight1`, `weight2` and `beta` are hardcoded into the program itself.
