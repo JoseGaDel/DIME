@@ -109,6 +109,9 @@ esp_err_t connect_wifi()
             },
         },
     };
+    if (strlen(PASS) == 0) {
+        wifi_config.sta.threshold.authmode = WIFI_AUTH_OPEN;
+    }
 
 
     // set the wifi controller to be a station
