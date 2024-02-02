@@ -5,7 +5,7 @@ This directory contains a set of companion programs designed to be run on your l
 ## Table of Contents
 
 - [Inference](#inference)
-- [WiFi communications](#wifi)
+- [WiFi communications](#WiFi communications)
 
 
 ## Inference
@@ -39,4 +39,9 @@ first with the device disconnected, and then a second time with the device conne
 |:--------------------:|:-------------------:|:-------------:|:-----------------:|:--------------------------:|:-----------------------------:|
 |         3187         |         113         |    96.5757    |        721        |             322            |            86.8181            |
 
-## Inference
+
+## Wifi Communication
+
+To measure the time cost of offloading an image from the ESP32, a TCP client can be run with the application found in [ESP32/wifi_communication/](../wifi_communication). In this directory, the TCP server can be found in `tcp_server.c`. This server program will read from buffer until it has read received an array of data equal to the size predefined in `#define BUFFER_SIZE (ROWS * COLUMNS * CHANNELS)`. Therefore, if the dimensions of the image sent by the client changes, hard-coding the new dimensions in the server is required.
+
+The server is designed to be a synthetic bench to run the experiment in one single device and is not designed to handle multiple simultaneous connections. The server will open a socket and bind it to the client persistently until the client closes it. This is done so that only one initialization of the connection is required. In each connection, it will read from buffer until the image is completed, then will send a byte back representing the result of running the image through the CNN. If the communication fails or the client terminates the connection, the server will open a new one and start listening for connections. 
