@@ -55,16 +55,15 @@ esp_err_t errwf;
 errwf = esp_wifi_get_protocol(WIFI_IF_STA, &getprotocol);
 if (errwf != ESP_OK) {
 	printf("Could not get protocol!");
-	//log_e("Could not get protocol! %d", err);
 }
 if (getprotocol & WIFI_PROTOCOL_11N) {
-	printf("WiFi_Protocol_11n\n");
+	printf("Wi-Fi Protocol: 802.11n\n");
 }
 if (getprotocol & WIFI_PROTOCOL_11G) {
-	printf("WiFi_Protocol_11g\n");
+	printf("Wi-Fi Protocol: 802.11g\n");
 }
 if (getprotocol & WIFI_PROTOCOL_11B) {
-	printf("WiFi_Protocol_11b\n");
+	printf("Wi-Fi Protocol: 802.11b\n");
 }
 ```
 
