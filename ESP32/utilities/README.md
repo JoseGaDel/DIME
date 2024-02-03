@@ -5,7 +5,7 @@ This directory contains a set of companion programs designed to be run on your l
 ## Table of Contents
 
 - [Inference](#inference)
-- [WiFi communications](#wifi-communications)
+- [WiFi communications](#wifi)
 
 
 ## Inference
@@ -40,7 +40,7 @@ first with the device disconnected, and then a second time with the device conne
 |         3187         |         113         |    96.5757    |        721        |             322            |            86.8181            |
 
 
-## Wifi Communication
+## Wifi Communication <a name="wifi"></a>
 
 To measure the time cost of offloading an image from the ESP32, a TCP client can be run with the application found in [ESP32/wifi_communication/](../wifi_communication). In this directory, the TCP server can be found in `tcp_server.c`. This server program will read from buffer until it has read received an array of data equal to the size predefined in `#define BUFFER_SIZE (ROWS * COLUMNS * CHANNELS)`. Therefore, if the dimensions of the image sent by the client changes, hard-coding the new dimensions in the server is required.
 
