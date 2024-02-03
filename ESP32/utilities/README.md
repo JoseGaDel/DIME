@@ -5,7 +5,7 @@ This directory contains a set of companion programs designed to be run on your l
 ## Table of Contents
 
 - [Inference](#inference)
-- [WiFi communications](#WiFi communications)
+- [WiFi communications](#wiFi-communications)
 
 
 ## Inference
