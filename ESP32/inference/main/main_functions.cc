@@ -3,8 +3,8 @@ Program to perform inference on a 32x32x3 image using a CNN model trained on the
 is fed to the program over serial communication. The program performs inference on the data and sends the 
 results and the execution time back over serial communication. The results are sent as a string, with the first
 10 values being the quantized output of the model, the 11th value being the logistic regression result, and the
-12th value being the execution time of the inference. When the program is flashed, the serial monitor must not be
-opened, as it will interfere with the serial communication.
+12th to 14th values being the execution times of the inference, logistic regression and the entire process. When
+the program is flashed, the serial monitor must not be opened, as it will interfere with the serial communication.
 
 This program is based on the example program provided by Espressif for the ESP32, which can be found here:
     https://github.com/espressif/esp-tflite-micro
@@ -184,19 +184,23 @@ void loop() {
       strcat(dataString, tempBuffer);
     }
 
-    // Perform logistic regression to estimate the validity of the inference
+    // Perform logistic regression to estimate the validity of the inference.
+    t0_inference = timer_u32();
     uint8_t log_reg = LRpredict(scores);
-
+    // Record the end time. This is the same for both the LR alone and the entire process, so we can use just one measurement.
+    dt = timer_u32();
     // Record the end time of the complete process
-    dt = timer_u32() - t0_total;
-    float elapsed_time_total = timer_delta_us(dt);
+    float elapsed_time_LR = timer_delta_us(dt - t0_inference);
+    float elapsed_time_total = timer_delta_us(dt - t0_total);
 
     // Add the Logistic Regression result to the output string
     snprintf(tempBuffer, sizeof(tempBuffer), "%d,", log_reg);
     strcat(dataString, tempBuffer);
 
-    // Add both execution times to the output string
+    // Add all execution times to the output string
     snprintf(tempBuffer, sizeof(tempBuffer), "%f,", elapsed_time_inference);
+    strcat(dataString, tempBuffer);
+    snprintf(tempBuffer, sizeof(tempBuffer), "%f,", elapsed_time_LR);
     strcat(dataString, tempBuffer);
     snprintf(tempBuffer, sizeof(tempBuffer), "%f", elapsed_time_total);
     strcat(dataString, tempBuffer);
