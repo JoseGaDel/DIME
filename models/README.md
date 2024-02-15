@@ -18,7 +18,8 @@ A LR model has been implemented to check wheter the sample should be offloaded o
 
 ## Alexnet and variations
 Also trained with normalized images. The required preprocessing is:
-- image = (image-mean)/std, where mean = [125.307, 122.95, 113.865] and std = [62.9932, 62.0887, 66.7048]
+- image = (image-mean)/std, where mean = [125.307, 122.95, 113.865] and std = [62.9932, 62.0887, 66.7048].
+
 Here the model has been quantized to uint8 for both input and output. Therefore inputs must be quantized accordingly. The parameters can be found using: "interpreter.get_input_details()" and they are: scale = 0.016141219064593315 and zero = 123
 
 Here, as with Resnet 8 the outputs are already normalized. Therefore, the LR model is trained directly with the quant outputs.
