@@ -22,5 +22,6 @@ Also trained with normalized images. The required preprocessing is:
 
 Here the model has been quantized to uint8 for both input and output. Therefore inputs must be quantized accordingly. The parameters can be found using: "interpreter.get_input_details()" and they are: scale = 0.016141219064593315 and zero = 123
 
-Here, as with Resnet 8 the outputs are already normalized. Therefore, the LR model is trained directly with the quant outputs.
+Here, as with Resnet 8 the outputs are already normalized. Therefore, the LR model is trained directly with the quant outputs. The trained parameters are: beta = -4.58669089, w1 = 0.02206441 and w2 = -0.00222133
+
 
