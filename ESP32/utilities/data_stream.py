@@ -3,7 +3,7 @@ import os
 import serial
 import numpy as np
 
-# Adjust the following variables to your specific case
+# Adjust the following variables to the specific device. The commented block below can help deciding which port to select
 #mcu_port = "/dev/ttyACM0" # Nano 33
 mcu_port = "/dev/ttyUSB0" # Serial port of the microcontroller
 data_path = "./data/cifar-10-batches-bin/test_batch.bin" # Location of the data file
@@ -54,7 +54,7 @@ else:
 
 
 
-# Initialize your arrays with the appropriate size
+# Initialize the arrays to store data with the selected size
 inference = np.concatenate([previous_run['inference'], np.zeros(num_images, dtype=int)])
 times_inference = np.concatenate([previous_run['times_inference'], np.zeros(num_images)])
 times_LR = np.concatenate([previous_run['times_LR'], np.zeros(num_images)])
@@ -72,14 +72,14 @@ with open(data_path, 'rb') as file:
     data = file.read()
 
 
-# write to serial communication the images, starting from the last found in the file "data_file.npy" up to the selected
-# number of runs selected by the user.
+# write the images to serial communication, starting from the last found in the file "data_file.npy" up to the selected
+# number of runs by the user.
 for i in range(j*image_size, len(data), image_size):
     ser.write(data[i+1:i+image_size])
     time.sleep(0.1)
 
-    # the program will wait for the ESP32 to send a signal with the character "#" that announce the program is going
-    # to send the results of the inference. Then, the program will read the content of the serial communication 
+    # the program will wait for the ESP32 to send a signal with the character "#", which announces the program is going
+    # to send the results of the inference. Then, it will read the content from the serial port 
     start_marker = ''
     while not start_marker:
         start_marker = ser.read().decode('utf-8')
@@ -92,7 +92,7 @@ for i in range(j*image_size, len(data), image_size):
 
     data_elements = received_data.split(',')
 
-    # format and store the results
+    # Format and store the results
     scores = [int(e) for e in data_elements[:10]]
     inference[j] = scores.index(max(scores))
     tabulated[j] = data[i]
@@ -108,10 +108,10 @@ for i in range(j*image_size, len(data), image_size):
     if j >= num_images + starting_at:
         break
 
-# we store the results so that we can resume the program later from this point.
+# Store the results so that we can resume the program later from this point.
 np.save(file_path, {'inference': inference, 'times_inference': times_inference, 'times_LR': times_LR, 'times_total': times_total, 'logReg': logReg, 'tabulated': tabulated})
 
-# we now calculate the precision of the inference
+# Calculate the precision of the inference
 goods = 0   # number of correct predictions of the complete system (TinyML + Logistic Regression)
 noOff = 0   # number of times the Logistic Regression correctly predicts the result from TinyML was wrong
 bads = 0    # number of times the complete system (TinyML + Logistic Regression) was wrong
@@ -127,7 +127,7 @@ for i in range(j):
     # TinyML was wrong and LR correctly predicts the result of TinyML was wrong
         noOff += 1
 
-
+# Perform statistics on the results and print them
 avg_inference_time = np.sum(times_inference)/len(times_inference)
 avg_LR_time = np.sum(times_LR)/len(times_LR)
 avg_total_time = np.sum(times_total)/len(times_total)
