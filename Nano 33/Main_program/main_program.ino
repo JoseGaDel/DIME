@@ -27,7 +27,7 @@ const int rows = 32;
 const int columns = 32;
 const int channels = 3;
 int8_t image[rows][columns][channels];
-const int numImages =  33;
+const int numImages =  25;
 byte imageData[numImages][imageSize];
 int8_t off_array[numImages];
 int imageIndex;
