@@ -3,7 +3,7 @@
 ## Main program
 This folder contains the program used to get the results of the TinyML and LR models. The output is a list containing three values for each sample: index of the image in the given batch, LR output and predicted class. 
 
-To run this program, one needs to feed the desired images via USB connection. The images are stored and processed in batches of 33 (this value can be changes respecting the memory constraints)
+To run this program, one needs to feed the desired images via USB connection. The images are stored and processed in batches of 25 (this value can be changed respecting the memory constraints). The images can be sent using "image_communication.ipynb".
 
 
 ## Time measurements
