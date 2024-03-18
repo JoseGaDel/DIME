@@ -12,7 +12,7 @@ Before running this program, ensure you have the following installed:
 
 - Python 3.x
 - PyTorch
-- [ONNX runtime with CUDA EP)[https://onnxruntime.ai/docs/install/]
+- [ONNX runtime with CUDA EP]([https://onnxruntime.ai/docs/install/)
 - NumPy
 - Pillow (PIL)
 - torchvision
