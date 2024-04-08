@@ -24,51 +24,6 @@ struct Image {
   uint8_t label;
 };
 
-std::vector<Image> LoadCifar10(const std::string& filename) {
-/*
-    Utility to load the CIFAR-10 dataset from a binary file.
-    - Input: filename: Path to the binary file
-    - Output: images: A vector of images, where each image is represented as a struct with the following fields:
-        - data: A vector of 3072 bytes (1024 bytes for each RGB channel)
-        - label: An integer representing the image label
-
-    Note: In this case we send the native image as raw 8-bit unsigned integers.
-    Your model may need to store the image as floats instead of integers, which
-    for this repo will be done in each particular case. This function may appear
-    in other folders with different implementations.
-*/
-
-  std::ifstream file(filename, std::ios::binary);
-  if (!file.is_open()) {
-    throw std::runtime_error("Failed to open file: " + filename);
-  }
-
-  // Check file size
-  file.seekg(0, std::ios::end);
-  int file_size = file.tellg();
-  if (file_size != 30730000) {
-    throw std::runtime_error("Invalid file size: " + filename);
-  }
-
-  file.seekg(0, std::ios::beg);
-
-  std::vector<Image> images(10000);
-  for (int i = 0; i < 10000; ++i) {
-    images[i].data.resize(3072);
-    // Store the image label
-    file.read(reinterpret_cast<char*>(&images[i].label), 1);
-
-    // Read the 3 RGB channels
-    for (int j = 0; j < 3072; ++j) {
-      unsigned char value;
-      file.read(reinterpret_cast<char*>(&value), 1);
-      images[i].data[j] = static_cast<uint8_t>(value);
-    }
-  }
-
-  return images;
-};
-
 
 std::vector<Image> LoadCifar10(const std::string& filename, int num_images, int width, int height, int channels) {
     /*
