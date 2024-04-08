@@ -1,3 +1,0 @@
-/home/jose/wifi/build/CMakeFiles/TCPClient.dir
-/home/jose/wifi/build/CMakeFiles/edit_cache.dir
-/home/jose/wifi/build/CMakeFiles/rebuild_cache.dir
