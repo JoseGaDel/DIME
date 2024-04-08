@@ -20,7 +20,7 @@ cmake ..
 make
 ```
 
-3. Run the server program in 
+3. Run the program [DIME/server/server_latency.c](https://github.com/JoseGaDel/DIME/blob/main/server/) on the server side.
 
 4. Run the client program on the edge device:
 
