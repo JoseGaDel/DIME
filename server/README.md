@@ -18,3 +18,12 @@ Before running this program, ensure you have the following installed:
 - torchvision
 
 This program was tested using the **ViT-H/14** model. You should modify the line `session = ort.InferenceSession("../path/to/vith14.onnx", session_options, providers=providers)` to the especific localization of your model.
+
+## server_latency.c
+
+This program implements a simple TCP server that receives the offloaded image from an edge device and immediately sends back a single byte. It is used just for measuring WiFi/Ethernet speeds and latency. Compile and run with:
+
+```bash
+gcc -O3 server_latency.c -o server
+./server
+```
