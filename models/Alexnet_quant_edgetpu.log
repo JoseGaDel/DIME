@@ -1,0 +1,14 @@
+Edge TPU Compiler version 16.0.384591198
+Input: Alexnet_quant.tflite
+Output: Alexnet_quant_edgetpu.tflite
+
+Operator                       Count      Status
+
+MAX_POOL_2D                    3          Mapped to Edge TPU
+ADD                            5          Mapped to Edge TPU
+SOFTMAX                        1          Mapped to Edge TPU
+RESHAPE                        1          Mapped to Edge TPU
+CONV_2D                        5          Mapped to Edge TPU
+FULLY_CONNECTED                3          Mapped to Edge TPU
+MUL                            5          Mapped to Edge TPU
+QUANTIZE                       2          Mapped to Edge TPU
