@@ -1,7 +1,7 @@
 # Models folder
 In this folder we keep all the tested models in their original and quantized versions.
 
-## Resnet 8 and variations
+## Resnet 8 and variations (Only for CIFAR-10)
 No preprocessing needed. The quantized versions require an int8 input so one has to substract 128 from each element in the original images. In the quantized versions the outputs are also quantized to int8.
 
 A LR model has been implemented for HI decision making. The regression has been trained directly with the quantized outputs which is equivalent due to the linearity of the expression given that only a binary answer is needed. The parameters for this model are: beta = 3.42381517, w1 = 0.03105428 and w2 = -0.00686018
@@ -12,6 +12,7 @@ A LR model has been implemented for HI decision making. The regression has been 
 | Full      | \-4.531622904031753 | 5.82555453 | \-3.59687685 |
 
 ## Resnet 56 and variations
+### CIFAR-10
 This model has been trained with normalized images. Therefore, images need to be preprocessed beforehand. The preprocessing steps are:
 - image = image/255.
 - image = (image-mean)/std, where mean = [0.4914, 0.4822, 0.4465] and std = [0.2023, 0.1994, 0.2010]
@@ -26,7 +27,10 @@ A LR model has been implemented to check wheter the sample should be offloaded o
 | Quant     | \-4.50152442        | 5.02825697 | \-3.943078   |
 | Full      | \-5.09909203324702  | 5.60475641 | \-4.37203237 |
 
+### Imagenet1k
+
 ## Alexnet and variations
+### CIFAR-10
 Also trained with normalized images. The required preprocessing is:
 - image = (image-mean)/std, where mean = [125.307, 122.95, 113.865] and std = [62.9932, 62.0887, 66.7048].
 
@@ -39,4 +43,9 @@ Here, as with Resnet 8 the outputs are already normalized. Therefore, the LR mod
 | Quant     | \-4.58669089         | 0.02206441 | \-0.00222133 |
 | Full      | \-3.7969481741850837 | 4.84755215 | \-1.79537036 |
 
+### Imagenet1k
 
+## Resnet18 (Only for Imagenet1k)
+
+
+## Resnet50 (Only for Imagenet1k)
