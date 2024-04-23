@@ -15,7 +15,7 @@ A LR model has been implemented for HI decision making. LR is applied to the pro
 This model has been trained with normalized images. Therefore, images need to be preprocessed beforehand. The preprocessing steps are:
 - image = image/255.
 - image = (image-mean)/std, where mean = [0.4914, 0.4822, 0.4465] and std = [0.2023, 0.1994, 0.2010]
-Here the model has been quantized to uint8 for both input and output. Therefore inputs must be quantized accordingly. The parameters can be found using: "interpreter.get_input_details()" and they are: scale = 0.02032469 and zero = 120
+Here the model has been quantized to uint8 for both input and output. Therefore inputs must be quantized accordingly.
 
 This models provide a non-normalized output. So, for the quant version in order to get the confidence values for each class one would have to unquantize the output and add a softmax layer. 
 
