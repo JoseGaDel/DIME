@@ -45,7 +45,7 @@ j, previous_run = load_data_file(file_path)
 starting_at = j
 
 inp = input("Enter the total number of images (press enter to use the entire data set): ")
-if inp == None:
+if inp == "":
     num_images = len(data) / image_size
 
 else:
