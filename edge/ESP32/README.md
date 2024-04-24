@@ -12,6 +12,14 @@ To make use of this repository, make sure the framework has been installed and t
  * The `IDF_PATH` environment variable is set
  * `idf.py` and Xtensa-esp32 tools (e.g. `xtensa-esp32-elf-gcc`) are in `$PATH`
 
+It is recommended to follow [Espressif's guide](https://docs.espressif.com/projects/esp-idf/en/v3.2.3/get-started/add-idf_path-to-profile.html), but in Linux and MacOS it would be done by adding 
+
+```bash
+export IDF_PATH=~/esp/esp-idf
+```
+
+to `~/.profile` or, if you have `/bin/bash` set as login shell, and both `.bash_profile` and `.profile` exist, then update `.bash_profile` instead. For Windows, follow the gide provided above. 
+
 After this, the procedure to build and upload any of the projects is the same.
 
 ### Building a project
