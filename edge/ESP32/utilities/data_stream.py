@@ -44,6 +44,10 @@ file_path = "data_file.npy"
 j, previous_run = load_data_file(file_path)
 starting_at = j
 
+# Read the binary file
+with open(data_path, 'rb') as file:
+    data = file.read()
+
 inp = input("Enter the total number of images (press enter to use the entire data set): ")
 if inp == "":
     num_images = len(data) / image_size
@@ -66,10 +70,6 @@ tabulated = np.concatenate([previous_run['tabulated'], np.zeros(num_images, dtyp
 # Open the serial port
 ser = serial.Serial(mcu_port, baud_rate)#, dsrdtr=True) 
 time.sleep(1)
-
-# Read the binary file
-with open(data_path, 'rb') as file:
-    data = file.read()
 
 
 # write the images to serial communication, starting from the last found in the file "data_file.npy" up to the selected
