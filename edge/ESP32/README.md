@@ -55,3 +55,18 @@ ls /dev/tty*
 ```
 
 By running this command with and without the ESP32 connected, we can find our device port by observing which entry changes between both runs. You can also run the program: `find_port.sh`
+
+## Port read permission issues
+
+In Linux, you may find that upon flashing a program you get an error message similar to 
+
+```
+Error: Invalid value for '-p' / '--port': Path '/dev/ttyUSB0' is not readable.
+```
+
+If so, you may solve this by adding your user to dialout:
+
+```bash
+sudo adduser <username> dialout
+sudo chmod a+rw /dev/ttyUSB0
+```
