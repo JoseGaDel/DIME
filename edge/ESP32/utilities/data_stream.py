@@ -50,7 +50,7 @@ with open(data_path, 'rb') as file:
 
 inp = input("Enter the total number of images (press enter to use the entire data set): ")
 if inp == "":
-    num_images = len(data) / image_size
+    num_images = int(len(data) / image_size)
 
 else:
     num_images = int(inp)
