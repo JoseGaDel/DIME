@@ -43,7 +43,21 @@ Here, as with Resnet 8 the outputs are normalized. Unquantize them and then aply
 
 ### Imagenet1k
 
-## Resnet18 (Only for Imagenet1k)
+## Resnet18 
+The weights used for the logistic regression decision are the following:
 
+| Precision | beta                 | w1         | w2           |
+| --------- | -------------------- | ---------- | ------------ |
+| Quant     | \-3.02860354         | 4.95192416 | \-1.7800178  |
 
-## Resnet50 (Only for Imagenet1k)
+## Resnet50 
+
+| Precision | beta                 | w1         | w2           |
+| --------- | -------------------- | ---------- | ------------ |
+| Quant     | \-3.45594814         | 5.11103057 | \-2.07690727 |
+
+## Alexnet
+
+| Precision | beta                 | w1         | w2           |
+| --------- | -------------------- | ---------- | ------------ |
+| Quant     | \-2.61127983         | 5.00778702 | \-1.23894854 |
