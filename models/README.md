@@ -1,7 +1,9 @@
 # Models folder
 In this folder we keep all the tested models in their original and quantized versions.
 
-## Resnet 8 (Only for CIFAR-10)
+# Cifar-10
+
+## Resnet 8 
 No preprocessing needed. The quantized versions require an int8 input so one has to substract 128 from each element in the original images. In the quantized versions the outputs are also quantized to int8.
 
 A LR model has been implemented for HI decision making. LR is applied to the probability vectors and therefore, the output of the model needs to be unquantized before applying LR.
@@ -11,7 +13,7 @@ A LR model has been implemented for HI decision making. LR is applied to the pro
 | Quant     | -4.63391351         | 5.93658349 | \-3.04197074 |
 | Full      | \-4.531622904031753 | 5.82555453 | \-3.59687685 |
 
-## Resnet 56 (Only for CIFAR-10)
+## Resnet 56 
 This model has been trained with normalized images. Therefore, images need to be preprocessed beforehand. The preprocessing steps are:
 - image = image/255.
 - image = (image-mean)/std, where mean = [0.4914, 0.4822, 0.4465] and std = [0.2023, 0.1994, 0.2010]
@@ -28,7 +30,6 @@ A LR model has been implemented again to check wheter the sample should be offlo
 
 
 ## Alexnet 
-### CIFAR-10
 Also trained with normalized images. The required preprocessing in this case is:
 - image = (image-mean)/std, where mean = [125.307, 122.95, 113.865] and std = [62.9932, 62.0887, 66.7048].
 
@@ -41,7 +42,9 @@ Here, as with Resnet 8 the outputs are normalized. Unquantize them and then aply
 | Quant     | \-4.33089237         | 5.39107836 | \-1.03445988 |
 | Full      | \-3.7969481741850837 | 4.84755215 | \-1.79537036 |
 
-### Imagenet1k
+
+
+# Imagenet1k
 
 ## Resnet18 
 The weights used for the logistic regression decision are the following:
