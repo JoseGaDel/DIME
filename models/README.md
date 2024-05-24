@@ -46,7 +46,7 @@ Here, as with Resnet 8 the outputs are normalized. Unquantize them and then aply
 
 # Imagenet-1k
 All the models implemented for this dataset require the use of the same preprocessing routine for the input images. Given that they do not have a fixed size nor channels number, the steps are the following:
-1) Resizing the images to size 256x256x3, following a RGB structure. The specific method to do so is "bilinear" which is the dedault option both in TensorFlow and Pytorch.
+1) Resizing the images to size 256x256x3, following a RGB structure. The specific method to do so is "bilinear" which is the default option both in TensorFlow and Pytorch.
 2) Crop the center part such that the new size  is 224x224x3.
 3) Divide by 255. to get values in range [0,1].
 4) Normalize using per channel mean and std. Mean=[0.485, 0.456, 0.406] and std=[0.229, 0.224, 0.225]
