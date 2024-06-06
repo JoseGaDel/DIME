@@ -6,9 +6,12 @@ import numpy as np
 # Adjust the following variables to the specific device. The commented block below can help deciding which port to select
 #mcu_port = "/dev/ttyACM0" # Nano 33
 mcu_port = "/dev/ttyUSB0" # Serial port of the microcontroller
-data_path = "./data/cifar-10-batches-bin/test_batch.bin" # Location of the data file
 baud_rate = 460800  # baud rate of the serial comms
-image_size = 3073
+
+cifar_data_path = "./data/cifar-10-batches-bin/test_batch.bin" # Location of the data file
+mnist_data_path = "./data/mnist_test_data.bin" # Location of the data file
+cifar_image_size = 3073
+mnist_image_size = 785
 
 
 
@@ -43,6 +46,20 @@ file_path = "data_file.npy"
 # Load existing data file or get the number of images for a new run
 j, previous_run = load_data_file(file_path)
 starting_at = j
+
+
+dataset = input("Select dataset to test:\n  1. CIFAR-10\n  2. MNIST\n")
+if dataset == '1':
+    output_size = 10
+    image_size = cifar_image_size
+    data_path = cifar_data_path
+elif dataset == '2':
+    output_size = 1
+    image_size = mnist_data_path
+    data_path = mnist_data_path
+else:
+    print("Invalid dataset selection, please choose 1 or 2.")
+    exit()
 
 # Read the binary file
 with open(data_path, 'rb') as file:
@@ -93,15 +110,16 @@ for i in range(j*image_size, len(data), image_size):
     data_elements = received_data.split(',')
 
     # Format and store the results
-    scores = [int(e) for e in data_elements[:10]]
-    inference[j] = scores.index(max(scores))
+    scores = [int(e) for e in data_elements[:output_size]]
+    inference[j] = scores.index(max(scores)) if dataset == '2' else int(data_elements[0])
     tabulated[j] = data[i]
-    logReg[j] = int(data_elements[10])
-    times_inference[j] = float(data_elements[11])
-    times_LR[j] = float(data_elements[12])
-    times_total[j] = float(data_elements[13])
+    logReg[j] = int(data_elements[output_size])
+    times_inference[j] = float(data_elements[output_size + 1])
+    times_LR[j] = float(data_elements[output_size + 2])
+    times_total[j] = float(data_elements[output_size + 3])
 
-    print(f'Processing image {j-starting_at} out of {num_images}', end='\r')
+    if (j-starting_at) % 50 == 0:
+        print(f'Processing image {j-starting_at} out of {num_images}', end='\r')
 
 
     j += 1
