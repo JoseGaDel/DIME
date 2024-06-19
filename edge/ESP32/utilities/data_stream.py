@@ -12,6 +12,8 @@ cifar_data_path = "./data/cifar-10-batches-bin/test_batch.bin" # Location of the
 mnist_data_path = "./data/mnist_test_data.bin" # Location of the data file
 cifar_image_size = 3073
 mnist_image_size = 785
+server_predictions = "./cifar_predictions.txt" # Location of the file with the results from the
+                                                # server for the CIFAR-10 dataset
 
 
 
@@ -72,17 +74,32 @@ if inp == "":
 else:
     num_images = int(inp)
 
+# make sure that if we have loaded N images from previous run, and the dataset is
+# of size M, then we only expand the previous run data to M images, not to M+N
 
+new_num_images = len(data) / image_size - starting_at 
 
+# Initialize the arrays to store data with the selected size.
+if new_num_images > 0:
+    inference = np.concatenate([previous_run['inference'], np.zeros(new_num_images, dtype=int)])
+    times_inference = np.concatenate([previous_run['times_inference'], np.zeros(new_num_images)])
+    times_LR = np.concatenate([previous_run['times_LR'], np.zeros(new_num_images)])
+    times_total = np.concatenate([previous_run['times_total'], np.zeros(new_num_images)])
+    logReg = np.concatenate([previous_run['logReg'], np.zeros(new_num_images, dtype=int)])
+    tabulated = np.concatenate([previous_run['tabulated'], np.zeros(new_num_images, dtype=int)])
+else:
+    inference = previous_run['inference']
+    times_inference = previous_run['times_inference']
+    times_LR = previous_run['times_LR']
+    times_total = previous_run['times_total']
+    logReg = previous_run['logReg']
+    tabulated = previous_run['tabulated']
 
-# Initialize the arrays to store data with the selected size
-inference = np.concatenate([previous_run['inference'], np.zeros(num_images, dtype=int)])
-times_inference = np.concatenate([previous_run['times_inference'], np.zeros(num_images)])
-times_LR = np.concatenate([previous_run['times_LR'], np.zeros(num_images)])
-times_total = np.concatenate([previous_run['times_total'], np.zeros(num_images)])
-logReg = np.concatenate([previous_run['logReg'], np.zeros(num_images, dtype=int)])
-tabulated = np.concatenate([previous_run['tabulated'], np.zeros(num_images, dtype=int)])
-
+# if `server_predictions` exists, load the results from the server
+if os.path.exists(server_predictions):
+    with open(server_predictions, 'r') as file:
+        server_results = file.readlines()
+        server_results = [int(e) for e in server_results]
 
 # Open the serial port
 ser = serial.Serial(mcu_port, baud_rate)#, dsrdtr=True) 
@@ -111,7 +128,7 @@ for i in range(j*image_size, len(data), image_size):
 
     # Format and store the results
     scores = [int(e) for e in data_elements[:output_size]]
-    inference[j] = scores.index(max(scores)) if dataset == '2' else int(data_elements[0])
+    inference[j] = scores.index(max(scores)) if dataset == '1' else int(data_elements[0])
     tabulated[j] = data[i]
     logReg[j] = int(data_elements[output_size])
     times_inference[j] = float(data_elements[output_size + 1])
@@ -130,28 +147,37 @@ for i in range(j*image_size, len(data), image_size):
 np.save(file_path, {'inference': inference, 'times_inference': times_inference, 'times_LR': times_LR, 'times_total': times_total, 'logReg': logReg, 'tabulated': tabulated})
 
 # Calculate the precision of the inference
-goods = 0   # number of correct predictions of the complete system (TinyML + Logistic Regression)
-noOff = 0   # number of times the Logistic Regression correctly predicts the result from TinyML was wrong
-bads = 0    # number of times the complete system (TinyML + Logistic Regression) was wrong
+local_accuracy = np.sum(inference == tabulated)/len(inference)*100
+goods = 0            # number of correct predictions of the complete system (TinyML + Logistic Regression)
+correctOffload = 0   # number of times the Logistic Regression correctly predicts the result from TinyML was wrong
+numOff = 0           # number of offloads
 for i in range(j):
-    if (logReg[i] == 0 or (logReg[i] == 1 and inference[i] == tabulated[i])):
-    # Either an offload (assume the big model has 100% accuracy) or LR correctly accepts the result of TinyML
+    if (logReg[i] == 0):
+        # Sample is offloaded to the server. If server_results is available, compare the results
+        # if not, assume 100% accuracy
+        numOff += 1
+        if server_results:
+            if server_results[i] == tabulated[i]:
+                goods += 1
+        else:
+            goods += 1
+        # if local prediction was indeed wrong, LR was successful in predicting it
+        if inference[i] != tabulated[i]:
+            correctOffload += 1
+    elif inference[i] == tabulated[i]:
+        # TinyML was right and LR correctly accepts the result
         goods += 1
-    else:
-    # TinyML was wrong and LR was wrong
-        bads += 1
-
-    if logReg[i] == 0 and inference[i] != tabulated[i]:
-    # TinyML was wrong and LR correctly predicts the result of TinyML was wrong
-        noOff += 1
 
 # Perform statistics on the results and print them
 avg_inference_time = np.sum(times_inference)/len(times_inference)
 avg_LR_time = np.sum(times_LR)/len(times_LR)
 avg_total_time = np.sum(times_total)/len(times_total)
 
-print(f'\n\nOut of {j} images\n__________________\nGood predictions: {goods}\nBad predictions: {bads}\nPrecision: {goods/j*100}\nNumber of offloads: {np.sum(logReg == 0)}')
-print(f'Of those offloads, {noOff} were correctly predicted by LR to be a wrong inference\nprec without offload: {(goods-noOff)/j*100}\n')
+print(f'Local precision: {local_accuracy} %')
+print(f'System precision: {goods/len(inference)*100} %')
+print(f'Out of {len(inference)} images, {numOff} were offloaded to the server ({numOff/len(inference)*100} %)')
+print(f'Of the offloaded images, {correctOffload/numOff*100} % were correctly predicted by the Logistic Regression')
+
 print(f'Avg inference time: {avg_inference_time} us   ({avg_inference_time/1000000} s)\nAvg LR time: {avg_LR_time} us   ({avg_LR_time/1000000} s)\nAvg total time: {avg_total_time} us   ({avg_total_time/1000000} s)')
 print(f'Avg difference {avg_total_time-avg_inference_time} us   ({(avg_total_time-avg_inference_time)/1000000} s)')
 print(f'Inference represents {avg_inference_time/avg_total_time*100}% of the total time\nLR represents {avg_LR_time/avg_total_time*100}% of the total time')
