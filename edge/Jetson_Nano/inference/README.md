@@ -1,0 +1,1 @@
+This device employs unified memory, i.e, both CPU and GPU have access to the same physical memory address space, and consequently, a zero-copy approach has been implemented to avoid superfluous memory transfers between host and device.
