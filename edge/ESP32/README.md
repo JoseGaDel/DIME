@@ -70,3 +70,8 @@ If so, you may solve this by adding your user to dialout:
 sudo adduser <username> dialout
 sudo chmod a+rw /dev/ttyUSB0
 ```
+
+
+## Quantization
+
+For this measurements, we have performed INT8 quantization using TFLite quantization toolkit. The XTensa microprocessor incorporates a set of Single Instruction, Multiple Data (SIMD) instructions that can enhance the performance of machine learning workloads.  An example is the vectorized fused multiply and add on 8 bit data, which includes loading the preceding data and ensuring alignment. This is especially advantageous for quantized convolutions and fully connected layers and may be a major contributor to the substantial enhancement in performance observed in quantized models. Even if a high level API is being used and the compiler misses the SIMD optimizations, it will still mean a greater proportion of the network fits into the cache lines. This, in turn, will reduce cache misses, which are costlier than arithmetic operations.
