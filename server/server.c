@@ -103,24 +103,17 @@ int main() {
             }
             total_bytes_received += bytes_received; // accumulate the received bytes to the total
         }
-        // 
-        //printf("Received data\n");
+
         /*
         _________  PERFORM INFERENCE  __________    
         */
-
-        // Process the image and get a response
-        //response = inference(buffer);
+        // We won't perform inference here, but instead will send an immediate response
         response = 0;
 
         // Send the response
         if (send(client_fd, &response, sizeof(response), 0) == -1) {
             perror("Send failed");
-            // ... error handling
         }
-
-        //printf("Response sent: %d\n", response);
-
     }
     // Close the server socket
     close(server_fd);
