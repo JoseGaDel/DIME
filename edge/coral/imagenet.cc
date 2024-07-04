@@ -1,3 +1,5 @@
+#if defined(IMAGENET)
+
 #include <algorithm>
 #include <cstdio>
 #include <string>
@@ -175,3 +177,5 @@ extern "C" void app_main(void *param) {
   coralmicro::Main();
   vTaskSuspend(nullptr);
 }
+
+#endif

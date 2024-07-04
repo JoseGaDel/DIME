@@ -15,15 +15,29 @@ include_directories(coralmicro)
 add_subdirectory(coralmicro)
 
 set(SOURCES
-    # NOTE: set to appropriate one. If it's CIFAR-10, use cifar.cc
-    # otherwise, imagenet.cc, if offloading, system.cc.
-    # cifar.cc
+    cifar.cc
     imagenet.cc
+    system.cc
     utils.cc
     image.cc
 )
 
 set(FILES )
+
+if (CIFAR10)
+    message("CIFAR10 enabled")
+    add_definitions(-DCIFAR10=1)
+endif()
+
+if (IMAGENET)
+    message("IMAGENET enabled")
+    add_definitions(-DIMAGENET=1)
+endif()
+
+if (SYSTEM)
+    message("SYSTEM enabled")
+    add_definitions(-DSYSTEM=1)
+endif()
 
 if (RESNET8)
     message("RESNET8 enabled")

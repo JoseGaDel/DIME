@@ -1,3 +1,5 @@
+#if defined(CIFAR10)
+
 #include <algorithm>
 #include <cstdio>
 #include <string>
@@ -160,3 +162,5 @@ extern "C" void app_main(void *param) {
   coralmicro::Main();
   vTaskSuspend(nullptr);
 }
+
+#endif
