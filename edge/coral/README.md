@@ -66,4 +66,8 @@ python3 coralmicro/scripts/flashtool.py --build_dir out --elf_path out/measureme
 ```
 
 Note that for `CIFAR10` measurements, the WiFi is unnecessary, however, for
-`IMAGENET`, it is mandatory to supply the network credentials.
+`IMAGENET`, it is mandatory to supply the network credentials. Moreover, you
+will have to copy models in the project or adjust their paths in the code
+appropriately. Mainly in `CMakeLists.txt`, `cifar.cc` and `imagenet.cc`.
+Currently, there should be `models` and `datasets` directories in `coral`
+directory (see `CMakeLists.txt` for reference).
