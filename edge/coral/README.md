@@ -26,32 +26,32 @@ To build the code, see the examples below:
 
 `CIFAR-10` AND `RESNET8`:
 ```bash
-cmake --fresh -DCIFAR10 -DRESNET8=1 -B out -S .
+cmake --fresh -DCIFAR10=1 -DRESNET8=1 -B out -S .
 ```
 
 `CIFAR-10` AND `RESNET56`:
 ```bash
-cmake --fresh -DCIFAR10 -DRESNET56=1 -B out -S .
+cmake --fresh -DCIFAR10=1 -DRESNET56=1 -B out -S .
 ```
 
 `CIFAR-10` AND `ALEXNET`:
 ```bash
-cmake --fresh -DCIFAR10 -DALEXNET=1 -B out -S .
+cmake --fresh -DCIFAR10=1 -DALEXNET=1 -B out -S .
 ```
 
 `IMAGENET` AND `RESNET18`:
 ```bash
-cmake --fresh -DIMAGENET -DRESNET18=1 -B out -S .
+cmake --fresh -DIMAGENET=1 -DRESNET18=1 -B out -S .
 ```
 
 `IMAGENET` AND `RESNET50`:
 ```bash
-cmake --fresh -DIMAGENET -DRESNET50=1 -B out -S .
+cmake --fresh -DIMAGENET=1 -DRESNET50=1 -B out -S .
 ```
 
 `SYSTEM`:
 ```bash
-cmake --fresh -DSYSTEM -B out -S .
+cmake --fresh -DSYSTEM=1 -B out -S .
 ```
 
 After this, to make, run: `make -C out -j8`. Instead of 8, specify the desired
