@@ -32,7 +32,7 @@ This will also give you the MAC address of the device, which is necessary to run
 To run the program, you need to run the server first. The server will start advertising the service and wait for a connection. To run the server, you need to run the following command:
 
 ```bash
-python server.py`
+python server.py
 ```
 
 After the server is running, you can run the client. The client will scan for the server and connect to it. To run the client, you need to run the following command:
