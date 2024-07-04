@@ -60,6 +60,7 @@ if (ALEXNET)
     add_definitions(-DALEXNET=1)
     list(APPEND FILES
         ${PROJECT_SOURCE_DIR}/models/alexnet_quant_edgetpu.tflite
+        # NOTE: Here, the batch should be split into two.
         ${PROJECT_SOURCE_DIR}/datasets/cifar10/alexnet_batch1.bin
     )
 endif()
