@@ -1,3 +1,6 @@
+import socket
+import sys
+
 def send_images(server_address, server_port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((server_address, server_port))
@@ -7,7 +10,7 @@ def send_images(server_address, server_port):
 
                 if not image_data:
                     print("All images sent.")
-                    break
+                    sys.exit(0)
 
                 s.sendall(image_data)
 
