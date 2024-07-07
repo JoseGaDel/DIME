@@ -2,7 +2,7 @@
 
 This project has been built from the [Espressif TensorFlow
 Lite for Microcontrollers example](https://github.com/espressif/esp-tflite-micro).
-It includes the full end-to-end routine for running inference on the CIFAR-10 dataset, which is fed into the microcontroller by the program which can be found in [ESP32/utilities/data_stream.py](https://github.com/JoseGaDel/DIME/tree/main/ESP32/utilities) and has to be run along side this.
+It includes the full end-to-end routine for running inference on the CIFAR-10 dataset, which is fed into the microcontroller by the program which can be found in [ESP32/utilities/data_stream.py](../utilities/) and has to be run along side this.
 
 ## Building the project
 
