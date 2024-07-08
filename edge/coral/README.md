@@ -21,7 +21,7 @@ device due to resource constraints. Therefore, the directory includes a separate
 `client.py` script, that sends one image at a time for the device to infere and
 apply logistic regression. The output of the program includes inferred label,
 logistic regression result, inference latency and logistic regression latency.
-The binary of images is obtained using [edge/imagenet_images.ipynb](edge/imagenet_images.ipynb).
+The binary of images is obtained using [edge/imagenet_images.ipynb](../imagenet_images.ipynb).
 
 To build the code, see the examples below:
 
