@@ -77,7 +77,7 @@ Then, compile the program with `make`. You will get the following executables:
 * `simulation` to run a simulation of the HI system. In this repo, we have implemented a simplified version if you are only concerned with the numbers shown in the paper. Therefore, the program instead of actually performing the offload, reads from a file that contains the class that the server model is going to produce, and use that instead. If you want to run the actual system, you may use the code in [the client program in the offloading section](../offload).
 * `logistic_regression` to test latency and energy consumption of logistic regression on the output of the model. This simply makes a random vector of the desired size and measures any of those two metric in a similar manner to the other programs.
 
-To run the first three, you need to pass the path to the TRT engine (explained next). The name must have format `name_dataset_precision.engine`. We can also indicate the number of iterations we want to run the program with the flag `--iterations`. If not specified, the program will default to 1000 iterations. For example, we can run the program with the following command:
+To run the first three, you need to pass the path to the TRT engine (explained next). The name must have format `name_dataset_precision.engine`. We can also indicate the number of iterations we want to run the program with the flag `--iterations`. If not specified, the program will default to 10000 iterations. For example, we can run the program with the following command:
 
 ```bash
 ./inference --model=../models/resnet56_imagenet_int8.engine
@@ -104,7 +104,7 @@ Or if you want to measure energy consumption for ImageNet1k, run
 
 ### Building a model engine
 
-On the models directory you can find some ONNX models. To build an engine, you can either use `trtexec`, which comes with the TensorRT framework, or use the program [build_engine.py in the int8/ directory](int8/build_engine.py). TThe latter is required to build engines with INT8 quantization, as `trtexec` does not support INT8 calibration. To build an engine with `trtexec`, go to the models directory and run the following command:
+On the models directory you can find some ONNX models. To build an engine, you can either use `trtexec`, which comes with the TensorRT framework, or use the program [build_engine.py in the int8/ directory](int8/build_engine.py). The latter is required to build engines with INT8 quantization, as `trtexec` does not support INT8 calibration. To build an engine with `trtexec`, go to the models directory and run the following command:
 
 ```bash
 trtexec --builderOptimizationLevel=99 --skipInference --onnx=model.onnx --saveEngine=model_dataset_precision.engine --precision
