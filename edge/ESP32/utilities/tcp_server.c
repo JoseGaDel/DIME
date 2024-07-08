@@ -103,8 +103,7 @@ int main() {
             }
             total_bytes_received += bytes_received; // accumulate the received bytes to the total
         }
-        // 
-        //printf("Received data\n");
+
         /*
         _________  PERFORM INFERENCE  __________    
         */
@@ -117,11 +116,7 @@ int main() {
         char response_char = (char)response + '0'; // Convert to ASCII character
         if (send(client_fd, &response_char, sizeof(response_char), 0) == -1) {
             perror("Send failed");
-            // ... error handling
         }
-
-        //printf("Response sent: %d\n", response);
-
     }
     // Close the server socket
     close(server_fd);
