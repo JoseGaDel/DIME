@@ -1,6 +1,6 @@
 # Hierarchical Inference
 
-This repository contains the implementation of the measurements presented in the paper:
+This repository contains the implementation of the latency and energy measurements on ESP32, Arduino Nano 33, Raspberry Pi, Coral Micro, and Jetson Orin Nano which are presented in the paper:
 
 > **Exploring the Boundaries of On-Device Inference: When Tiny Falls Short, Go Hierarchical (https://arxiv.org/abs/2407.11061)**<br>
 
